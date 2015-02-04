@@ -11,10 +11,8 @@ args = parser.parse_args()
 config = ConfigParser.ConfigParser()
 config.readfp(open(args.config))
 
-account_id = config.get('GrouperWebServices','account_id')
-account_pass = config.get('GrouperWebServices','account_password')
-base_url = config.get('GrouperWebServices','base_url')
-ws = GrouperWS(base_url, account_id, account_pass)
+ws_config = dict(config.items('GrouperWebServices'))
+ws = GrouperWS(ws_config['base_url'], ws_config['account_id'], ws_config['account_password'])
 
 subjects = ws.subjects('/groups/' + args.group_name +'/members', 'WsGetMembersLiteResult')
 for subject in subjects:
