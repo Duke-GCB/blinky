@@ -16,13 +16,22 @@ account_id = config.get('GrouperWebServices','account_id')
 account_pass = config.get('GrouperWebServices','account_password')
 base_url = config.get('GrouperWebServices','base_url')
 
-def ws_get(url):
-  return json.loads(requests.get(base_url + url,auth=(account_id, account_pass)).content)
+def ws_get(url, root_node=None):
+  result = json.loads(requests.get(base_url + url,auth=(account_id, account_pass)).content)
+  if root_node:
+    return result[root_node]
+  else:
+    return result
 
-result = ws_get('/groups/' + args.group_name +'/members')
+def ws_dump(url, root_node=None):
+  return json.dumps(ws_get(url, root_node), indent=2)
 
-subjects = result['WsGetMembersLiteResult']['wsSubjects']
+def ws_subjects(url, root_node=None):
+  return ws_get(url, root_node)['wsSubjects']
+
+subjects = ws_subjects('/groups/' + args.group_name +'/members', 'WsGetMembersLiteResult')
 for subject in subjects:
-  member = ws_get('/subjects/' + subject['id'])
+  members = ws_subjects('/subjects/' + subject['id'], 'WsGetSubjectsResults')
 
-  print member['WsGetSubjectsResults']['wsSubjects'][0]['id'], member['WsGetSubjectsResults']['wsSubjects'][0]['name']
+  for member in members:
+    print member['id'], member['name']
