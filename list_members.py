@@ -14,9 +14,5 @@ config.readfp(open(args.config))
 ws_config = dict(config.items('GrouperWebServices'))
 ws = GrouperWS(ws_config['base_url'], ws_config['account_id'], ws_config['account_password'])
 
-subjects = ws.subjects('/groups/' + args.group_name +'/members', 'WsGetMembersLiteResult')
-for subject in subjects:
-  members = ws.subjects('/subjects/' + subject['id'], 'WsGetSubjectsResults')
-
-  for member in members:
-    print member['id'], member['name']
+for member in ws.group_members(args.group_name):
+  print member['id'], member['name']
