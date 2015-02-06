@@ -16,10 +16,10 @@ ws_config = dict(config.items('GrouperWebServices'))
 ws = GrouperWS(ws_config['base_url'], ws_config['account_id'], ws_config['account_password'])
 
 duke_ldap = ldap.open("ldap.duke.edu")
-for member in ws.group_members(args.group_name):
+for member in ws.group_member_ids(args.group_name):
   r = duke_ldap.search("dc=duke,dc=edu", ldap.SCOPE_SUBTREE, "duDukeID="+member['id'], ['uid'])
   ldap_result = duke_ldap.result(r,0)
   if ldap_result[0] == 100:
-    print '{0}:{1}:{2}'.format(member['id'], ldap_result[1][0][1]['uid'][0], member['name'])
+    print member['id']+':'+ldap_result[1][0][1]['uid'][0]
   else:
     print ":("
