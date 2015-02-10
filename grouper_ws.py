@@ -1,17 +1,16 @@
+import logging
 import json
 import requests
 
 class GrouperWS:
-  def __init__(self, base_url, account_id, account_pass, verbose=False):
+  def __init__(self, base_url, account_id, account_pass):
     self.base_url = base_url
     self.account_id = account_id
     self.account_pass = account_pass
-    self.verbose = verbose
 
   def ws_get(self, url, root_node=None):
     result = json.loads(requests.get(self.base_url + url,auth=(self.account_id, self.account_pass)).content)
-    if self.verbose:
-      print json.dumps(result, indent=2)
+    logging.debug(json.dumps(result, indent=2))
     if root_node:
       return result[root_node]
     else:
