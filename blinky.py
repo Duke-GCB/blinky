@@ -2,9 +2,9 @@ from grouper_ws import GrouperWS
 from duke_ldap import DukeLdap
 
 class Blinky:
-  def __init__(self, ws_base_url, ws_account_id, ws_password, ldap_hostname):
-    self.grouper = GrouperWS(ws_base_url, ws_account_id, ws_password)
-    self.ldap = DukeLdap(ldap_hostname)
+  def __init__(self, ws_base_url, ws_account_id, ws_password, ldap_hostname, verbose=False):
+    self.grouper = GrouperWS(ws_base_url, ws_account_id, ws_password, verbose)
+    self.ldap = DukeLdap(ldap_hostname, verbose)
 
   def group_members(self, group_name):
     members = []
