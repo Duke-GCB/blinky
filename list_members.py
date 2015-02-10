@@ -15,6 +15,7 @@ config.readfp(open(args.config))
 ws_config = dict(config.items('GrouperWebServices'))
 ws = GrouperWS(ws_config['base_url'], ws_config['account_id'], ws_config['account_password'])
 
-dldap = DukeLdap("ldap.duke.edu")
+ldap_config = dict(config.items('DukeLdap'))
+dldap = DukeLdap(ldap_config['hostname'])
 for member in ws.group_member_ids(args.group_name):
   print member['id']+':'+dldap.member_uid(member['id'])
