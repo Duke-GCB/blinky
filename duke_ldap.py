@@ -4,11 +4,13 @@ class DukeLdap:
   def __init__(self, hostname):
     self.ldap_conn = ldap.open("ldap.duke.edu")
 
-  def member_uid(self, duke_id):
+  def member(self, duke_id):
+    member = {}
+    attrs = ['uid']
     l = self.ldap_conn
-    r = l.search("dc=duke,dc=edu", ldap.SCOPE_SUBTREE, "duDukeID="+duke_id, ['uid'])
+    r = l.search("dc=duke,dc=edu", ldap.SCOPE_SUBTREE, "duDukeID="+duke_id, attrs)
     result = l.result(r, 0)
     if result[0] == 100:
-      return result[1][0][1]['uid'][0]
-    else:
-      return "PC_LOAD_LETTER"
+      for attr in attrs:
+        member[attr] = result[1][0][1][attr][0]
+    return member

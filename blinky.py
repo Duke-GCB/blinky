@@ -9,8 +9,6 @@ class Blinky:
   def group_members(self, group_name):
     members = []
     for member in self.grouper.group_member_ids(group_name):
-      m = {}
-      m['id'] = member['id']
-      m['uid'] = self.ldap.member_uid(member['id'])
-      members.append(m)
+      member.update(self.ldap.member(member['id']))
+      members.append(member)
     return members
