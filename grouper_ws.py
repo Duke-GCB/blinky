@@ -20,13 +20,15 @@ class GrouperWS:
   def ws_subjects(self, url, root_node=None):
     return self.ws_get(url, root_node)['wsSubjects']
 
-  def group_member_ids(self, group_name):
-    return self.ws_subjects('/groups/' + group_name +'/members', 'WsGetMembersLiteResult')
-
   def group_members(self, group_name):
-    members = []
-    subjects = self.ws_subjects('/groups/' + group_name +'/members', 'WsGetMembersLiteResult')
-    for subject in subjects:
-      for member in self.ws_subjects('/subjects/' + subject['id'], 'WsGetSubjectsResults'):
-        members.append(member)
-    return members
+    return self.ws_subjects('/groups/' + group_name +'/members', 'WsGetMembersLiteResult')
+  def subjects(self, subject_id):
+    return self.ws_subjects('/subjects/' + subject_id, 'WsGetSubjectsResults')
+
+  def group_members_subjects(self, group_name):
+    subjects = []
+    members = self.group_members(group_name)
+    for member in members:
+      for subject in self.subjects(member['id']):
+        subjects.append(subject)
+    return subjects
