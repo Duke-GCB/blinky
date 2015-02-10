@@ -17,16 +17,16 @@ class GrouperWS:
     else:
       return result
 
-  def subjects(self, url, root_node=None):
+  def ws_subjects(self, url, root_node=None):
     return self.ws_get(url, root_node)['wsSubjects']
 
   def group_member_ids(self, group_name):
-    return self.subjects('/groups/' + group_name +'/members', 'WsGetMembersLiteResult')
+    return self.ws_subjects('/groups/' + group_name +'/members', 'WsGetMembersLiteResult')
 
   def group_members(self, group_name):
     members = []
-    subjects = self.subjects('/groups/' + group_name +'/members', 'WsGetMembersLiteResult')
+    subjects = self.ws_subjects('/groups/' + group_name +'/members', 'WsGetMembersLiteResult')
     for subject in subjects:
-      for member in self.subjects('/subjects/' + subject['id'], 'WsGetSubjectsResults'):
+      for member in self.ws_subjects('/subjects/' + subject['id'], 'WsGetSubjectsResults'):
         members.append(member)
     return members
