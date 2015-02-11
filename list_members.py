@@ -4,25 +4,38 @@ import argparse
 import logging
 from blinky import Blinky
 
-parser = argparse.ArgumentParser(description='List the members of a group', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('group_name', help='is the name of the group including stems, e.g duke:gcb:security:admins')
-parser.add_argument('--config', help='location of the config file', default=os.path.expanduser('~/.grouper_script.cfg'))
-parser.add_argument('--debug', help='display information to aid in debugging', action='store_true')
-args = parser.parse_args()
+def __main__():
+  parser = argparse.ArgumentParser(description='Grouper mutation that can see ldap with its third eye.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-config = ConfigParser.ConfigParser()
-config.readfp(open(args.config))
+  parent_parser = argparse.ArgumentParser(add_help=False)
+  parent_parser.add_argument('--config', help='location of the config file', default=os.path.expanduser('~/.grouper_script.cfg'))
+  parent_parser.add_argument('--debug', help='display information to aid in debugging', action='store_true')
 
-if args.debug:
-  logging.basicConfig(format='%(levelname)s[%(module)s.%(funcName)s]:%(message)s', level=logging.DEBUG)
+  subparsers = parser.add_subparsers(help='sub-command help')
 
-ws_config = dict(config.items('GrouperWebServices'))
-ldap_config = dict(config.items('DukeLdap'))
-duke_blinky = Blinky(
-    ws_base_url = ws_config['base_url'], 
-    ws_account_id = ws_config['account_id'], 
-    ws_password = ws_config['account_password'],
-    ldap_hostname = ldap_config['hostname'])
+  group_members_parser = subparsers.add_parser('group_members', help='group_members help', parents=[parent_parser])
+  group_members_parser.add_argument('group_name', help='is the name of the group including stems, e.g duke:gcb:security:admins')
+  group_members_parser.set_defaults(func=group_members)
 
-for member in duke_blinky.group_members(args.group_name):
-  print member['id']+':'+member['uid']
+  args = parser.parse_args()
+
+  config = ConfigParser.ConfigParser()
+  config.readfp(open(args.config))
+
+  if args.debug:
+    logging.basicConfig(format='%(levelname)s[%(module)s.%(funcName)s]:%(message)s', level=logging.DEBUG)
+
+  ws_config = dict(config.items('GrouperWebServices'))
+  ldap_config = dict(config.items('DukeLdap'))
+  duke_blinky = Blinky(
+      ws_base_url = ws_config['base_url'], 
+      ws_account_id = ws_config['account_id'], 
+      ws_password = ws_config['account_password'],
+      ldap_hostname = ldap_config['hostname'])
+  args.func(duke_blinky, args)
+
+def group_members(duke_blinky, args):
+  for member in duke_blinky.group_members(args.group_name):
+    print member['id']+':'+member['uid']
+
+__main__()
