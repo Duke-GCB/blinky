@@ -3,7 +3,7 @@ import ldap
 
 class DukeLdap:
   def __init__(self, hostname):
-    self.ldap_conn = ldap.open("ldap.duke.edu")
+    self.ldap_conn = ldap.open(hostname)
 
   def search(self, filter, attrs=[]):
     member = {}
