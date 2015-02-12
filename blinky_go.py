@@ -17,6 +17,16 @@ def __main__():
   group_members_parser.add_argument('group_name', help='is the name of the group including stems, e.g duke:gcb:security:admins')
   group_members_parser.set_defaults(func=group_members)
 
+  group_delete_member_parser = subparsers.add_parser('delete_member', help='delete_member help', parents=[parent_parser])
+  group_delete_member_parser.add_argument('group_name', help='is the name of the group including stems, e.g duke:gcb:security:admins')
+  group_delete_member_parser.add_argument('duke_id', help='is numeric duke unique id to delete from the group')
+  group_delete_member_parser.set_defaults(func=group_delete_member)
+
+  group_add_member_parser = subparsers.add_parser('add_member', help='add_member help', parents=[parent_parser])
+  group_add_member_parser.add_argument('group_name', help='is the name of the group including stems, e.g duke:gcb:security:admins')
+  group_add_member_parser.add_argument('duke_id', help='is numeric duke unique id to add from the group')
+  group_add_member_parser.set_defaults(func=group_add_member)
+
   args = parser.parse_args()
 
   config = ConfigParser.ConfigParser()
@@ -37,5 +47,9 @@ def __main__():
 def group_members(duke_blinky, args):
   for member in duke_blinky.group_members(args.group_name):
     print member['id']+':'+member['uid']
+def group_delete_member(duke_blinky, args):
+  print duke_blinky.group_delete_member(args.group_name, args.duke_id)
+def group_add_member(duke_blinky, args):
+  print duke_blinky.group_add_member(args.group_name, args.duke_id)
 
 __main__()

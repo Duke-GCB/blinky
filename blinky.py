@@ -15,3 +15,9 @@ class Blinky:
       members.append(member)
     logging.debug(json.dumps(members, indent=2))
     return members
+
+  def group_delete_member(self, group_name, duke_id):
+    return self.grouper.group_delete_member(group_name, duke_id)
+
+  def group_add_member(self, group_name, duke_id):
+    return self.grouper.group_add_member(group_name, duke_id)
