@@ -7,24 +7,25 @@ from blinky import Blinky
 def __main__():
   parser = argparse.ArgumentParser(description='Grouper mutation that can see ldap with its third eye.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-  parent_parser = argparse.ArgumentParser(add_help=False)
-  parent_parser.add_argument('--config', help='location of the config file', default=os.path.expanduser('~/.grouper_script.cfg'))
-  parent_parser.add_argument('--debug', help='display information to aid in debugging', action='store_true')
+  common_args = argparse.ArgumentParser(add_help=False)
+  common_args.add_argument('--config', help='location of the config file', default=os.path.expanduser('~/.grouper_script.cfg'))
+  common_args.add_argument('--debug', help='display information to aid in debugging', action='store_true')
+
+  group_arg = argparse.ArgumentParser(add_help=False)
+  group_arg.add_argument('group_name', help='is the name of the group including stems, e.g duke:gcb:security:admins')
+
+  member_arg = argparse.ArgumentParser(add_help=False)
+  member_arg.add_argument('duke_id', help='is numeric duke unique id to delete from the group')
 
   subparsers = parser.add_subparsers(help='sub-command help')
 
-  group_members_parser = subparsers.add_parser('group_members', help='group_members help', parents=[parent_parser])
-  group_members_parser.add_argument('group_name', help='is the name of the group including stems, e.g duke:gcb:security:admins')
+  group_members_parser = subparsers.add_parser('group_members', help='group_members help', parents=[common_args, group_arg])
   group_members_parser.set_defaults(func=group_members)
 
-  group_delete_member_parser = subparsers.add_parser('delete_member', help='delete_member help', parents=[parent_parser])
-  group_delete_member_parser.add_argument('group_name', help='is the name of the group including stems, e.g duke:gcb:security:admins')
-  group_delete_member_parser.add_argument('duke_id', help='is numeric duke unique id to delete from the group')
+  group_delete_member_parser = subparsers.add_parser('delete_member', help='delete_member help', parents=[common_args, group_arg, member_arg])
   group_delete_member_parser.set_defaults(func=group_delete_member)
 
-  group_add_member_parser = subparsers.add_parser('add_member', help='add_member help', parents=[parent_parser])
-  group_add_member_parser.add_argument('group_name', help='is the name of the group including stems, e.g duke:gcb:security:admins')
-  group_add_member_parser.add_argument('duke_id', help='is numeric duke unique id to add from the group')
+  group_add_member_parser = subparsers.add_parser('add_member', help='add_member help', parents=[common_args, group_arg, member_arg])
   group_add_member_parser.set_defaults(func=group_add_member)
 
   args = parser.parse_args()
