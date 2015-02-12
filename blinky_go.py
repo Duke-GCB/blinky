@@ -19,14 +19,11 @@ def __main__():
 
   subparsers = parser.add_subparsers(help='sub-command help')
 
-  group_members_parser = subparsers.add_parser('group_members', help='group_members help', parents=[common_args, group_arg])
-  group_members_parser.set_defaults(func=group_members)
+  subparsers.add_parser('group_members', help='group_members help', parents=[common_args, group_arg]).set_defaults(func=group_members)
 
-  group_delete_member_parser = subparsers.add_parser('delete_member', help='delete_member help', parents=[common_args, group_arg, member_arg])
-  group_delete_member_parser.set_defaults(func=group_delete_member)
+  subparsers.add_parser('delete_member', help='delete_member help', parents=[common_args, group_arg, member_arg]).set_defaults(func=group_delete_member)
 
-  group_add_member_parser = subparsers.add_parser('add_member', help='add_member help', parents=[common_args, group_arg, member_arg])
-  group_add_member_parser.set_defaults(func=group_add_member)
+  subparsers.add_parser('add_member', help='add_member help', parents=[common_args, group_arg, member_arg]).set_defaults(func=group_add_member)
 
   args = parser.parse_args()
 
