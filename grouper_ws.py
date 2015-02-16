@@ -28,8 +28,14 @@ class GrouperWS:
   def ws_subjects(self, url, root_node=None):
     return self.ws_get(url, root_node)['wsSubjects']
 
+  def ws_groups(self, url, root_node=None):
+    return self.ws_get(url, root_node)['wsGroups']
+
   def group_members(self, group_name):
     return self.ws_subjects('/groups/' + group_name +'/members', 'WsGetMembersLiteResult')
+
+  def member_groups(self, subject_id):
+    return self.ws_groups('/subjects/' + subject_id +'/groups', 'WsGetGroupsLiteResult')
 
   def subjects(self, subject_id):
     return self.ws_subjects('/subjects/' + subject_id, 'WsGetSubjectsResults')

@@ -15,11 +15,13 @@ def __main__():
   group_arg.add_argument('group_name', help='is the name of the group including stems, e.g duke:gcb:security:admins')
 
   member_arg = argparse.ArgumentParser(add_help=False)
-  member_arg.add_argument('net_id', help='is Duke net id use')
+  member_arg.add_argument('net_id', help='is Duke net id to use')
 
   subparsers = parser.add_subparsers(help='sub-command help')
 
   subparsers.add_parser('group_members', help='group_members help', parents=[common_args, group_arg]).set_defaults(func=group_members)
+
+  subparsers.add_parser('member_groups', help='member_groups help', parents=[common_args, member_arg]).set_defaults(func=member_groups)
 
   subparsers.add_parser('delete_member', help='delete_member help', parents=[common_args, group_arg, member_arg]).set_defaults(func=group_delete_member)
 
@@ -45,6 +47,9 @@ def __main__():
 def group_members(duke_blinky, args):
   for member in duke_blinky.group_members(args.group_name):
     print member['id']+':'+member['uid']
+def member_groups(duke_blinky, args):
+  for group in duke_blinky.member_groups(args.net_id):
+    print group['name']
 def group_delete_member(duke_blinky, args):
   print duke_blinky.group_delete_member(args.group_name, args.net_id)
 def group_add_member(duke_blinky, args):

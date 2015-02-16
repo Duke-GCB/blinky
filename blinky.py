@@ -16,6 +16,11 @@ class Blinky:
     logging.debug(json.dumps(members, indent=2))
     return members
 
+  def member_groups(self, net_id):
+    member = self.ldap.member(net_id=net_id)
+    if member['duDukeID']:
+      return self.grouper.member_groups(member['duDukeID'])
+
   def group_delete_member(self, group_name, net_id):
     member = self.ldap.member(net_id=net_id)
     if member['duDukeID']:
