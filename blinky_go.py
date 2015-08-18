@@ -1,4 +1,3 @@
-#!/bin/env python
 import ConfigParser
 import os
 import argparse
