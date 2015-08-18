@@ -20,6 +20,9 @@ def __main__():
     member_arg = argparse.ArgumentParser(add_help=False)
     member_arg.add_argument('net_id', help='is Duke net id to use')
 
+    stem_arg = argparse.ArgumentParser(add_help=False)
+    stem_arg.add_argument('stem_name', help='Stem Name (e.g. abc:def)')
+
     subparsers = parser.add_subparsers(help='sub-command help')
 
     subparsers.add_parser('group_members',
@@ -45,6 +48,12 @@ def __main__():
                           parents=[common_args, group_arg, member_arg],
                           formatter_class=argparse.ArgumentDefaultsHelpFormatter
                           ).set_defaults(func=group_add_member)
+
+    subparsers.add_parser('find_stems',
+                          help='Find stems matching a name',
+                          parents=[common_args, stem_arg],
+                          formatter_class=argparse.ArgumentDefaultsHelpFormatter
+                          ).set_defaults(func=find_stems)
 
     args = parser.parse_args()
 
@@ -81,5 +90,9 @@ def group_delete_member(duke_blinky, args):
 def group_add_member(duke_blinky, args):
     print duke_blinky.group_add_member(args.group_name, args.net_id)
 
+
+def find_stems(duke_blinky, args):
+    for stem_name in duke_blinky.stems(args.stem_name):
+        print stem_name
 
 __main__()
