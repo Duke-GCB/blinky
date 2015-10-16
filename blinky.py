@@ -33,6 +33,9 @@ class Blinky:
         if member['duDukeID']:
             return self.grouper.group_add_member(group_name, member['duDukeID'])
 
+    def group_save(self, group_name):
+        return self.grouper.group_save(group_name)
+
     def stems(self, stem_name):
         stems = self.grouper.stems(stem_name)
         return [stem['name'] for stem in stems['stemResults']]

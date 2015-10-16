@@ -28,6 +28,16 @@ class GrouperWS:
     def ws_put(self, url, root_node=None):
         return self.ws_request('PUT', url, root_node)
 
+    def ws_post(self, url, payload, root_node=None):
+        headers = {'content-type': 'text/x-json'}
+        result = json.loads(
+            requests.post(self.base_url + url, auth=(self.account_id, self.account_pass), data=json.dumps(payload), headers=headers).content)
+        logging.debug(json.dumps(result, indent=2))
+        if root_node:
+            return result[root_node]
+        else:
+            return result
+
     def ws_subjects(self, url, root_node=None):
         return self.ws_get(url, root_node)['wsSubjects']
 
@@ -48,6 +58,16 @@ class GrouperWS:
 
     def group_add_member(self, group_name, duke_id):
         return self.ws_put('/groups/' + group_name + '/members/' + duke_id, 'WsAddMemberLiteResult')
+
+    def group_save(self, group_name):
+        data = {'WsRestGroupSaveLiteRequest':{
+              'actAsSubjectId': 'GrouperSystem',
+              'description': 'desc1',
+              'displayExtension': 'disp1',
+              'groupName': group_name
+            }
+        }
+        return self.ws_post('/groups/' + group_name, data, 'WsRestGroupSaveLiteResult')
 
     def stems(self, stem_name):
         query = '?wsLiteObjectType=WsRestFindStemsLiteRequest&stemName={0}&stemQueryFilterType={1}'.format(stem_name, 'FIND_BY_STEM_NAME_APPROXIMATE')

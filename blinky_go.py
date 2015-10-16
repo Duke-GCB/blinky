@@ -50,6 +50,12 @@ def __main__():
                           formatter_class=argparse.ArgumentDefaultsHelpFormatter
                           ).set_defaults(func=group_add_member)
 
+    subparsers.add_parser('group_save',
+                          help='create/save a group',
+                          parents=[common_args, group_arg],
+                          formatter_class=argparse.ArgumentDefaultsHelpFormatter
+                          ).set_defaults(func=group_save)
+
     subparsers.add_parser('find_stems',
                           help='Find stems matching a name',
                           parents=[common_args, stem_arg],
@@ -90,6 +96,9 @@ def group_delete_member(duke_blinky, args):
 
 def group_add_member(duke_blinky, args):
     print duke_blinky.group_add_member(args.group_name, args.net_id)
+
+def group_save(duke_blinky, args):
+    print duke_blinky.group_save(args.group_name)
 
 
 def find_stems(duke_blinky, args):
