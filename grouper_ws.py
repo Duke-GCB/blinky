@@ -50,7 +50,7 @@ class GrouperWS:
         return self.ws_put('/groups/' + group_name + '/members/' + duke_id, 'WsAddMemberLiteResult')
 
     def stems(self, stem_name):
-        query = '?wsLiteObjectType=WsRestFindStemsLiteRequest&stemName={}&stemQueryFilterType={}'.format(stem_name, 'FIND_BY_STEM_NAME_APPROXIMATE')
+        query = '?wsLiteObjectType=WsRestFindStemsLiteRequest&stemName={0}&stemQueryFilterType={1}'.format(stem_name, 'FIND_BY_STEM_NAME_APPROXIMATE')
         return self.ws_get('/stems' + query, 'WsFindStemsResults')
 
     def group_members_subjects(self, group_name):
