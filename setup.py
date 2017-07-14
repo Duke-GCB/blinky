@@ -7,7 +7,7 @@ setup(name='DukeBlinky',
         url='https://github.com/Duke-GCB/DukeBlinky',
         keywords='duke ldap grouper internet2',
         license='MIT',
-        packages=['blinky.py'],
+        py_modules=['blinky'],
         install_requires=[
           'python-ldap==2.4.41',
           'requests==2.18.1',
