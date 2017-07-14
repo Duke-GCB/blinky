@@ -7,7 +7,7 @@ import logging
 from blinky import Blinky
 
 
-def __main__():
+def main():
     default_config_location = os.path.expanduser('~/.blinky.cfg')
     parser = argparse.ArgumentParser(description='Grouper mutation that can see ldap with its third eye.')
 
@@ -105,4 +105,5 @@ def find_stems(duke_blinky, args):
     for stem_name in duke_blinky.stems(args.stem_name):
         print stem_name
 
-__main__()
+if __name__ == '__main__':
+    main()

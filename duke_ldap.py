@@ -3,7 +3,7 @@ import logging
 import ldap
 
 
-class DukeLdap:
+class DukeLdap(object):
     def __init__(self, hostname):
         self.ldap_conn = ldap.open(hostname)
 

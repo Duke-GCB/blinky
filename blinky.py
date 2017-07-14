@@ -5,7 +5,7 @@ from grouper_ws import GrouperWS
 from duke_ldap import DukeLdap
 
 
-class Blinky:
+class Blinky(object):
     def __init__(self, ws_base_url, ws_account_id, ws_password, ldap_hostname):
         self.grouper = GrouperWS(ws_base_url, ws_account_id, ws_password)
         self.ldap = DukeLdap(ldap_hostname)
