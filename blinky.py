@@ -6,7 +6,16 @@ from duke_ldap import DukeLdap
 
 
 class Blinky(object):
+    """
+    Allows a user to view and manage data in both duke ldap and group manager.
+    """
     def __init__(self, ws_base_url, ws_account_id, ws_password, ldap_hostname):
+        """
+        :param ws_base_url: str: url to grouper
+        :param ws_account_id: str: integer id of the user we will use for grouper authentication
+        :param ws_password: str: password of the user we will user for grouper authentication
+        :param ldap_hostname: str: duke ldap domain name
+        """
         self.grouper = GrouperWS(ws_base_url, ws_account_id, ws_password)
         self.ldap = DukeLdap(ldap_hostname)
 
